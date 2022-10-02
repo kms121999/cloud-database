@@ -6,7 +6,7 @@ This application serves as an address book. It provides a simple terminal interf
 
 This project was created to explore the the capabilities and implementation of a cloud database.
 
-[Software Demo Video](http://youtube.link.goes.here)
+[Software Demo Video](https://youtu.be/y8quUpUVkJQ)
 
 # Cloud Database
 
