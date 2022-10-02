@@ -1,10 +1,10 @@
 # Overview
 
-{Talk about what you are trying to accomplish as a software engineer to further your learning.}
+I am exploring new software tools to increase my knowledge and ability to solve unique software challenges.
 
-{Provide a description the software that you wrote and how it integrates with a Cloud Database.  Describe how to use your program.}
+This application serves as an address book. It provides a simple terminal interface allowing you to create, edit, delete, or view addresses. It uses a cloud database to persist the address book among instances of the application.
 
-{Describe your purpose for writing this software.}
+This project was created to explore the the capabilities and implementation of a cloud database.
 
 {Provide a link to your YouTube demonstration.  It should be a 4-5 minute demo of the software running, a walkthrough of the code, and a view of the cloud database.}
 
@@ -12,25 +12,27 @@
 
 # Cloud Database
 
-{Describe the cloud database you are using.}
+This application utilizes a Cloud Firestore from Google Firebase.
 
-{Describe the structure of the database that you created.}
+A single collection represents the address book. Each document in the collection represents a single address. Each document has a city, state, street, and zip_code field.
+
 
 # Development Environment
 
-{Describe the tools that you used to develop the software}
-
-{Describe the programming language that you used and any libraries.}
+* Python 3.10.7 32 bit
+* Firebase Admin SDK for Python (5.3.0)
+* Visual Studio Code
+* Git / Github
 
 # Useful Websites
 
-{Make a list of websites that you found helpful in this project}
-* [Web Site Name](http://url.link.goes.here)
-* [Web Site Name](http://url.link.goes.here)
+* [Cloud Firestore Quickstart](https://firebase.google.com/docs/firestore/quickstart)
+* [Google Service Accounts Info](https://cloud.google.com/iam/docs/service-accounts)
+* [Cloud Firestore Docs](https://firebase.google.com/docs/firestore)
 
 # Future Work
 
 {Make a list of things that you need to fix, improve, and add in the future.}
-* Item 1
-* Item 2
-* Item 3
+* Implement pagination of display all addresses
+* Implement a GUI
+* Open address in Google Maps
