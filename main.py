@@ -4,29 +4,51 @@ import firebase_admin
 from firebase_admin import credentials
 from firebase_admin import firestore
 
+# Firestore Credentials File
 SERVICE_ACCOUNT_CRED_FILE = "./service_account.json"
 
 
 def print_addresses(addresses, selection_mode = False):
-  print(
-    f"{'Option ' if selection_mode else '':<}" \
-    f"{'Street':<30} {'City':<20} {'State':<20} {'Zip':<10}"
-  )
+  '''
+  Displays addresses in a neat table.
+  
+  Selection mode displays numbers increasing from one
+  in the first column of the table.
+  '''
+  # Calculate the horizontal bar for the table
+  bar_string = "-" * (92 + (6 if selection_mode else 0))
 
-  choice_number = 1
+  # Display the table header
+  print(bar_string)
+  print(
+    f"{'| Opt | ' if selection_mode else '| '}" \
+    f"{'Street':<30} | {'City':<20} | {'State':<20} | {'Zip':<10}|"
+  )
+  print(bar_string)
+
+  # Display addresses
+  choice_number = 1   # Used for "Opt" column in selection_mode
   for address_document in addresses:
+    # Get a readable type
     address = address_document.to_dict()
 
+    # Display the address row
     print(
-      f"{str(choice_number) + ' ' if selection_mode else ''}" \
-      f"{address.get('street', ''):<30} {address.get('city', ''):<20} {address.get('state', ''):<20} {address.get('zip_code', ''):<10}"
+      f"{f'| {str(choice_number):^3} | ' if selection_mode else '| '}" \
+      f"{address.get('street', ''):<30} | {address.get('city', ''):<20} | {address.get('state', ''):<20} | {address.get('zip_code', ''):<10}|"
     )
     
+    # Increment option number
     choice_number += 1
 
-  print()
+  # Bottom bar of table
+  print(bar_string)
+  print() 
 
 def print_address(address_obj):
+  '''
+  Prints a single address in standard format.
+  '''
   address = address_obj.to_dict()
 
   print(address["street"])
@@ -34,15 +56,18 @@ def print_address(address_obj):
 
 
 def print_all_addresses(db):
+  '''
+  Gets and displays all addresses from database
+  '''
   results = db.collection("addresses").get()
 
   print_addresses(results)
 
-  
-
-  
-
 def search_addresses(db):
+  '''
+  Interface to search for an address by one of its fields.
+  '''
+  # Display search menu
   print("Search by")
   print("1 Zip Code")
   print("2 City")
@@ -53,6 +78,7 @@ def search_addresses(db):
   selection = input("Option: ")
   print()
 
+  # Perform requested search
   results = None
   if selection == "1":
     search = input("Zip Code: ")
@@ -69,6 +95,9 @@ def search_addresses(db):
   elif selection == "0":
     return
 
+  print()
+
+  # Display results
   if results and len(results) > 0:
     print_addresses(results)
   else:
@@ -95,12 +124,16 @@ def select_address(db):
     return None
 
   # Check for and handle multiple results
-  selection = None
+  selection = 1
   if len(results) > 1:
+    # Displays addresses with option values
     print_addresses(results, selection_mode = True)
+    # Get user's choice
     print("There were more than one addresses found. Please choose which address you would like to select")
     selection = input("Option: ")
     print()
+
+    # Convert selection to int and validate
     try:
       selection = int(selection)
       if selection < 0 or selection > len(results):
@@ -116,17 +149,6 @@ def select_address(db):
 
   # Return the selected address's id
   return results[selection - 1]
-
-
-
-
-
-
-
-
-  
-  
-
 
 def add_address(db):
   '''
@@ -184,6 +206,8 @@ def update_address(db):
     if data[key] == ".":
       del data[key]
 
+  if not data:
+    return
 
   db.collection("addresses").document(address.id).update(data)
 
