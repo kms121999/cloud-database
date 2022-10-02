@@ -43,7 +43,12 @@ def print_addresses(addresses, selection_mode = False):
 
   # Bottom bar of table
   print(bar_string)
-  print() 
+  print()
+
+  # When viewing data, pause to allow user to read.
+  if not selection_mode:
+    input("Press enter to continue...")
+    print()
 
 def print_address(address_obj):
   '''
@@ -155,7 +160,6 @@ def add_address(db):
   Gets an address from the user and adds it
   to the database.
   '''
-  
   # Get input
   street = input("Street: ")
   city = input("City: ")
@@ -163,8 +167,7 @@ def add_address(db):
   zip_code = input("Zip Code: ")
   print()
 
-  # Validate and compile data
-
+  # Compile data
   data = {
     "street": street,
     "city": city,
@@ -179,15 +182,17 @@ def update_address(db):
   '''
   Select then update an address
   '''
+  # Get address from user. Check for failed selection.
   address = select_address(db)
-
   if address == None:
     return
 
+  # Display the selected address
   print("Selected Address:")
   print_address(address)
   print()
 
+  # Request input on fields of address
   print("Edit fields. Use \".\" to signify no change.")
   street = input("Street: ")
   city = input("City: ")
@@ -202,13 +207,16 @@ def update_address(db):
     "zip_code": zip_code,
   }
 
+  # Don't update fields that were signified as "no change"
   for key in list(data.keys()):
     if data[key] == ".":
       del data[key]
 
+  # If no fields were changed, do nothing
   if not data:
     return
 
+  # Only update specified fields
   db.collection("addresses").document(address.id).update(data)
 
 
@@ -216,17 +224,21 @@ def delete_address(db):
   '''
   Select then delete an address
   '''
+  # Get address from user. Check for failed selection.
   address = select_address(db)
-
   if address == None:
     return
 
+  # Display selected address
   print("Selected Address:")
   print_address(address)
   print()
+  
+  # Confirm deletion with user
   confirmation = input("Are you sure you want to delete this address? (Y/N): ")
   print()
 
+  # Check confirmation response
   if confirmation.lower() in ["y", "yes", "si", "sí", "affimative", "activate address shredder", "murder it"]:
     db.collection("addresses").document(address.id).delete()
     print("Address was deleted.")
@@ -234,11 +246,11 @@ def delete_address(db):
     print("Address was spared.")
   print()
 
-
-
 def init_database():
+  '''
+  Sets up and returns the Firestore database client.
+  '''
   creds = credentials.Certificate(SERVICE_ACCOUNT_CRED_FILE)
-
   app = firebase_admin.initialize_app(creds)
 
   db = firestore.client()
@@ -253,6 +265,7 @@ def main():
 
   selection = None
   while selection != "0":
+    # Display menu
     print("Available Operations:")
     print("1 Add an address")
     print("2 Update an address")
@@ -280,4 +293,3 @@ def main():
 
 if __name__ == "__main__":
   main()
-
