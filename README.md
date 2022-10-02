@@ -6,8 +6,6 @@ This application serves as an address book. It provides a simple terminal interf
 
 This project was created to explore the the capabilities and implementation of a cloud database.
 
-{Provide a link to your YouTube demonstration.  It should be a 4-5 minute demo of the software running, a walkthrough of the code, and a view of the cloud database.}
-
 [Software Demo Video](http://youtube.link.goes.here)
 
 # Cloud Database
@@ -32,7 +30,6 @@ A single collection represents the address book. Each document in the collection
 
 # Future Work
 
-{Make a list of things that you need to fix, improve, and add in the future.}
 * Implement pagination of display all addresses
 * Implement a GUI
-* Open address in Google Maps
+* Option to open address in Google Maps
